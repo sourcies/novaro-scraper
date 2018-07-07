@@ -16,7 +16,10 @@ const tableURL = {
  * @returns {!Array<string><string>}
  */
 const getTableData = async (itemId, url) => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   const page = await browser.newPage();
   await page.goto(url+itemId);
 
@@ -38,12 +41,17 @@ const getTableData = async (itemId, url) => {
   return tableData;
 };
 
-const init = async () => {
-  // get live market data
-  console.log(await getTableData('2162', tableURL.LIVE));
+// const init = async () => {
+//   // get live market data
+//   console.log(await getTableData('2162', tableURL.LIVE));
+//
+//   // get transaction history
+//   console.log(await getTableData('2162', tableURL.HISTORY));
+// };
 
-  // get transaction history
-  console.log(await getTableData('2162', tableURL.HISTORY));
+// init();
+
+module.exports = {
+  tableURL,
+  getTableData
 };
-
-init();

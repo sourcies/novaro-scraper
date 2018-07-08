@@ -5,8 +5,7 @@ const tableURL = {
   HISTORY: 'https://www.novaragnarok.com/?module=vending&action=itemhistory&id=',
 };
 
-const getTableData = (itemId, tableType) => {
-  return new Promise(async (resolve, reject) => {
+const getTableData = async (itemId, tableType, callback) => {
     let url = '';
 
     if (tableType === 'LIVE') url = tableURL.LIVE;
@@ -16,10 +15,7 @@ const getTableData = (itemId, tableType) => {
       return;
     }
 
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url+itemId);
 
@@ -38,17 +34,18 @@ const getTableData = (itemId, tableType) => {
       }
       return normalizedTable;
     });
-    resolve(tableData);
-  });
+
+    await browser.close();
+    callback(tableData);
 };
 
-const buildMarkdownMessage = (tableData, tableType) => {
+const toMarkdown = (tableData, tableType) => {
   let title = '';
 
   if (tableType === 'LIVE') title = 'Live Market Data';
   else if (tableType === 'HISTORY') title = 'Transaction History';
   else {
-    console.log(`Error: Invalid value in 'tableType'. Raised from buildMarkdownMessage/2.`);
+    console.log(`Error: Invalid value in 'tableType'. Raised from toMarkdown/2.`);
     return;
   }
 
@@ -69,5 +66,5 @@ const buildMarkdownMessage = (tableData, tableType) => {
 
 module.exports = {
   getTableData,
-  buildMarkdownMessage
+  toMarkdown
 };

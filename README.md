@@ -35,17 +35,22 @@ NovaroScraper.getTableData('2162', 'HISTORY');
  * @enum {string}
  */
 const tableURL = {
-  LIVE: 'https://www.novaragnarok.com/?module=vending&action=item&id=',
-  HISTORY: 'https://www.novaragnarok.com/?module=vending&action=itemhistory&id=',
+ LIVE: 'https://www.novaragnarok.com/?module=vending&action=item&id=',
+ HISTORY: 'https://www.novaragnarok.com/?module=vending&action=itemhistory&id=',
 };
 
 /*
- * Gets data from table. Returns a 2D array with format [row][cell].
+ * @callback getTableDataCallback
+ * @param {string[][]} - 2D array with format [row][cell].
+ */
+
+/*
+ * Gets data from table. Callback receives a 2D array with format [row][cell].
  * @param {string} itemId - The ID of the item to be looked up.
  * @param {tableURL} tableType - One of the enumeration values.
- * @return {Promise<string[][]>}
+ * @param {getTableDataCallback} callback - The callback that handles the response.
  */
- getTableData(itemId, tableType)
+getTableData(itemId, tableType, callback)
 
 /*
  * Sets 'title' depending on 'tableType'. Builds a string with Markdown format
@@ -54,5 +59,5 @@ const tableURL = {
  * @param {tableURL} tableType - One of the enumeration values.
  * @return {{title: string, data: string}}
  */
-buildMarkdownMessage(tableData, tableType)
+toMarkdown(tableData, tableType)
  ```

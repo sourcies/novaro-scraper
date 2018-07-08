@@ -1,12 +1,6 @@
-# Add to `package.json` as a dependency
-```
-"dependencies": {
-  "novaro-scraper": "https://github.com/d4rkwizo/novaro-scraper.git"
-}
-```
 # Install the dependency
 ```
-npm i
+npm i --save https://github.com/d4rkwizo/novaro-scraper.git
 ```
 # Usage example
 ```

@@ -1,7 +1,7 @@
 # Add to `package.json` as a dependency
 ```
 "dependencies": {
-  "novaro-scraper": "git+ssh://git@github.com:d4rkwizo/novaro-scraper.git"
+  "novaro-scraper": "https://github.com/d4rkwizo/novaro-scraper.git"
 }
 ```
 # Install the dependency

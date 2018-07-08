@@ -6,14 +6,14 @@ npm i --save https://github.com/d4rkwizo/novaro-scraper.git
 ```
 const NovaroScraper = require('novaro-scraper');
 
-NovaroScraper.getTableData('2162', NovaroScraper.tableURL.LIVE);
+NovaroScraper.getTableData('2162', 'LIVE');
 
 // [ [ 'Price ▲', 'Refine', 'Additional Properties', 'Location' ],
 //   [ '20,000,000z', '+0', 'None', 'newvending,135,142' ],
 //   [ '30,000,000z', '+0', 'INT +1', 'einbroch,221,189' ],
 //   [ '30,000,000z', '+0', 'INT +1', 'einbroch,221,189' ] ]
 
-NovaroScraper.getTableData('2162', NovaroScraper.tableURL.HISTORY);
+NovaroScraper.getTableData('2162', 'HISTORY');
 
 // [ [ 'Date Sold ▼', 'Price', 'Refine', 'Additional Properties' ],
 //   [ '07/7/18 - 18:38', '20,000,000z', '+0', 'None' ],

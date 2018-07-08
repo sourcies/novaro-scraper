@@ -1,8 +1,8 @@
-# Install the dependency
+# Installation
 ```
 npm i --save https://github.com/d4rkwizo/novaro-scraper.git
 ```
-# Usage example
+# Example
 ```
 const NovaroScraper = require('novaro-scraper');
 
@@ -31,19 +31,28 @@ NovaroScraper.getTableData('2162', 'HISTORY');
 # Documentation
 ```
 /*
- * Get data from table. Returns a 2D array with format [row][cell].
- * @param {string} itemId - The ID of the item to be looked up.
- * @param {tableURL} url - One of the enumeration values.
- * @returns {!Array<string><string>}
+ * Types of tableURL.
+ * @enum {string}
  */
- getTableData(itemId, url)
+const tableURL = {
+  LIVE: 'https://www.novaragnarok.com/?module=vending&action=item&id=',
+  HISTORY: 'https://www.novaragnarok.com/?module=vending&action=itemhistory&id=',
+};
 
- /*
-  * Types of tableURL.
-  * @enum {string}
-  */
- const tableURL = {
-   LIVE: 'https://www.novaragnarok.com/?module=vending&action=item&id=',
-   HISTORY: 'https://www.novaragnarok.com/?module=vending&action=itemhistory&id=',
- };
+/*
+ * Gets data from table. Returns a 2D array with format [row][cell].
+ * @param {string} itemId - The ID of the item to be looked up.
+ * @param {tableURL} tableType - One of the enumeration values.
+ * @return {Promise<string[][]>}
+ */
+ getTableData(itemId, tableType)
+
+/*
+ * Sets 'title' depending on 'tableType'. Builds a string with Markdown format
+ * from 'tableData'.
+ * @param {string[][]} tableData - Table data in the format of a 2D array [row][cell].
+ * @param {tableURL} tableType - One of the enumeration values.
+ * @return {{title: string, data: string}}
+ */
+buildMarkdownMessage(tableData, tableType)
  ```

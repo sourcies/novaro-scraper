@@ -21,17 +21,19 @@ const getTableData = async (itemId, tableType, callback) => {
     const page = await browser.newPage();
     await page.goto(endpoint+itemId);
 
-    let evalData = await page.evaluate(() => {
+    page.on('console', msg => {
+      console.log(msg.args());
+    });
+
+    await page.evaluate(() => {
       let tableRows = $('table.horizontal-table')[1].rows;
       let normalizedTable = [];
 
       for (let row of tableRows) {
-        let price = row.cells[0].innerText;
-        let refine = row.cells[1].innerText;
-        let additionalProp = row.cells[2].innerText;
-        let location = row.cells[3].innerText;
-        let arrOfCells = [price, refine, additionalProp, location];
-
+        let arrOfCells = [];
+        for (let cell of row.cells) {
+          arrOfCells.push(cell.innerText);
+        }
         normalizedTable.push(arrOfCells);
       }
 
@@ -43,10 +45,17 @@ const getTableData = async (itemId, tableType, callback) => {
         iconURL,
         itemName
       };
+    })
+    .then((evalData) => {
+      // console.log(evalData);
+      callback(evalData.normalizedTable, evalData.iconURL, evalData.itemName);
+    })
+    .catch((err) => {
+      console.log('Error: Failed to evaluate page. Raised from getTableData/2.');
+      console.log(err);
     });
 
     await browser.close();
-    callback(evalData.normalizedTable, evalData.iconURL, evalData.itemName);
 };
 
 const toMarkdown = (tableData, tableType) => {

@@ -1,9 +1,9 @@
 # Installation
-```
+```bash
 npm i --save https://github.com/d4rkwizo/novaro-scraper.git
 ```
 # Example
-```
+```js
 const NovaroScraper = require('novaro-scraper');
 
 NovaroScraper.getTableData('2162', 'LIVE', (tableData, iconURL, itemName) => {
@@ -26,7 +26,7 @@ console.log(message);
 //   data: '```\nPrice ▲ | Refine | Additional Properties | Location | \n30,000,000z | +0 | INT +1 | einbroch,221,189 | \n30,000,000z | +0 | INT +1 | einbroch,221,189 | \n```' }
 ```
 # Documentation
-```
+```jsdoc
 /*
  * Types of tableURL.
  * @enum {string}
@@ -52,8 +52,7 @@ const tableURL = {
 getTableData(itemId, tableType, callback(tableData, iconURL, itemName))
 
 /*
- * Sets 'title' depending on 'tableType'. Builds a string with Markdown format
- * from 'tableData'.
+ * Sets 'title' depending on 'tableType'. Builds a string with Markdown format from 'tableData'.
  * @param {string[][]} tableData - Table data in the format of a 2D array [row][cell].
  * @param {tableURL} tableType - One of the enumeration values.
  * @return {{title: string, data: string}}

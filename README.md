@@ -1,3 +1,5 @@
+# WARNING
+**2018/7/9 - Memory leak found in logic. Fix has yet to be implemented.**
 # Installation
 ```bash
 npm i --save https://github.com/d4rkwizo/novaro-scraper.git

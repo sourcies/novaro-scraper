@@ -1,4 +1,8 @@
 const puppeteer = require('puppeteer');
+const request = require('request');
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+const cheerio = require('cheerio');
 
 const tableURL = {
   LIVE: 'https://www.novaragnarok.com/?module=vending&action=item&id=',
@@ -47,15 +51,16 @@ const getTableData = async (itemId, tableType, callback) => {
       };
     })
     .then((evalData) => {
-      // console.log(evalData);
+      console.log(evalData);
       callback(evalData.normalizedTable, evalData.iconURL, evalData.itemName);
     })
     .catch((err) => {
       console.log('Error: Failed to evaluate page. Raised from getTableData/2.');
       console.log(err);
     });
-
+    console.log('before close');
     await browser.close();
+    console.log('after close');
 };
 
 const toMarkdown = (tableData, tableType) => {
@@ -87,3 +92,48 @@ module.exports = {
   getTableData,
   toMarkdown
 };
+
+const asdf = (itemId, tableType, callback) => {
+  let url = '';
+  let iconURL = '';
+  let itemName = '';
+
+  if (tableType === 'LIVE') url = tableURL.LIVE;
+  else if (tableType === 'HISTORY') url = tableURL.HISTORY;
+  else {
+    console.log(`Error: Invalid value in 'tableType'. Raised from asdf/2.`);
+    return;
+  }
+
+  let options = {
+    url: url+itemId,
+    method: 'GET'
+  };
+
+  request(options, (err, res, body) => {
+    if (!err && res.statusCode === 200) {
+      // console.log(body);
+      // const dom = new JSDOM('`'+body+'`');
+      // const dom = new JSDOM(``, {
+      //   url: url+itemId
+      // });
+      // console.log(dom.window.document);
+
+      const $ = cheerio.load(body);
+      // console.log($.html());
+      console.log($('table.horizontal-table')[1].children[3].children[1].children[1]);
+    }
+  })
+
+  // const dom = new JSDOM(``, {
+  //   url: url+itemId
+  // });
+  // console.log(dom.window.document);
+};
+
+asdf('2162', 'LIVE', (tableData, iconURL, itemName) => {
+  console.log('inside callback');
+  console.log(tableData);
+  console.log(iconURL);
+  console.log(itemName);
+});

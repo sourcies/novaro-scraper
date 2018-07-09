@@ -6,14 +6,18 @@ npm i --save https://github.com/d4rkwizo/novaro-scraper.git
 ```
 const NovaroScraper = require('novaro-scraper');
 
-NovaroScraper.getTableData('2162', 'LIVE', (tableData) => {
+NovaroScraper.getTableData('2162', 'LIVE', (tableData, iconURL, itemName) => {
   console.log(tableData);
+  console.log(iconURL);
+  console.log(itemName);
 });
 
 // [ [ 'Price ▲', 'Refine', 'Additional Properties', 'Location' ],
 //   [ '20,000,000z', '+0', 'None', 'newvending,135,142' ],
 //   [ '30,000,000z', '+0', 'INT +1', 'einbroch,221,189' ],
 //   [ '30,000,000z', '+0', 'INT +1', 'einbroch,221,189' ] ]
+// 'https://www.novaragnarok.com/data/items/icons2/2162.png'
+// 'Bible of Promise(2nd Vol.) [1]'
 
 let message = NovaroScraper.toMarkdown(tableData, 'LIVE');
 console.log(message);
@@ -34,7 +38,9 @@ const tableURL = {
 
 /*
  * @callback getTableDataCallback
- * @param {string[][]} - 2D array with format [row][cell].
+ * @param {string[][]} tableData - 2D array with format [row][cell].
+ * @param {string} iconURL - URL of the icon of the item that was looked up.
+ * @param {string} itemName - Name of the item that was looked up.
  */
 
 /*
@@ -43,7 +49,7 @@ const tableURL = {
  * @param {tableURL} tableType - One of the enumeration values.
  * @param {getTableDataCallback} callback - The callback that handles the response.
  */
-getTableData(itemId, tableType, callback)
+getTableData(itemId, tableType, callback(tableData, iconURL, itemName))
 
 /*
  * Sets 'title' depending on 'tableType'. Builds a string with Markdown format

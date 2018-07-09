@@ -6,10 +6,12 @@ const tableURL = {
 };
 
 const getTableData = async (itemId, tableType, callback) => {
-    let url = '';
+    let endpoint = '';
+    let iconURL = '';
+    let itemName = '';
 
-    if (tableType === 'LIVE') url = tableURL.LIVE;
-    else if (tableType === 'HISTORY') url = tableURL.HISTORY;
+    if (tableType === 'LIVE') endpoint = tableURL.LIVE;
+    else if (tableType === 'HISTORY') endpoint = tableURL.HISTORY;
     else {
       console.log(`Error: Invalid value in 'tableType'. Raised from getTableData/2.`);
       return;
@@ -17,9 +19,9 @@ const getTableData = async (itemId, tableType, callback) => {
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.goto(url+itemId);
+    await page.goto(endpoint+itemId);
 
-    let tableData = await page.evaluate(() => {
+    let evalData = await page.evaluate(() => {
       let tableRows = $('table.horizontal-table')[1].rows;
       let normalizedTable = [];
 
@@ -32,11 +34,19 @@ const getTableData = async (itemId, tableType, callback) => {
 
         normalizedTable.push(arrOfCells);
       }
-      return normalizedTable;
+
+      iconURL = $('a')[21].parentElement.previousElementSibling.src;
+      itemName = $('a')[21].innerText;
+
+      return {
+        normalizedTable,
+        iconURL,
+        itemName
+      };
     });
 
     await browser.close();
-    callback(tableData);
+    callback(evalData.normalizedTable, evalData.iconURL, evalData.itemName);
 };
 
 const toMarkdown = (tableData, tableType) => {

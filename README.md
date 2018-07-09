@@ -45,6 +45,7 @@ const tableURL = {
 
 /*
  * Gets data from table. Callback receives a 2D array with format [row][cell].
+ * @async
  * @param {string} itemId - The ID of the item to be looked up.
  * @param {tableURL} tableType - One of the enumeration values.
  * @param {getTableDataCallback} callback - The callback that handles the response.

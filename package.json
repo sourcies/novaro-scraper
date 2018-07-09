@@ -1,7 +1,7 @@
 {
   "name": "novaro-scraper",
   "version": "2.0.0",
-  "description": "",
+  "description": "NPM package for scraping NovaRO market place ",
   "main": "index.js",
   "dependencies": {
     "puppeteer": "^1.5.0"
@@ -15,7 +15,7 @@
     "url": "git+https://github.com/d4rkwizo/novaro-scraper.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "d4rkwizo",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/d4rkwizo/novaro-scraper/issues"

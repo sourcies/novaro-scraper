@@ -35,7 +35,6 @@ const getTableData = (itemId, tableType, callback) => {
         let arrOfCells = [];
         for (let cell of row.cells) {
           arrOfCells.push(cell.textContent.replace(/\\n|\\t|\s/g, ''));
-          console.log(JSON.stringify(cell.textContent));
         }
         normalizedTable.push(arrOfCells);
       }
@@ -78,9 +77,3 @@ module.exports = {
   getTableData,
   toMarkdown
 };
-
-getTableData('7619', 'LIVE', (tableData, iconURL, itemName) => {
-  console.log(tableData);
-  console.log(iconURL);
-  console.log(itemName);
-});

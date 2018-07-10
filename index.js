@@ -1,66 +1,52 @@
-const puppeteer = require('puppeteer');
 const request = require('request');
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
-const cheerio = require('cheerio');
 
 const tableURL = {
   LIVE: 'https://www.novaragnarok.com/?module=vending&action=item&id=',
   HISTORY: 'https://www.novaragnarok.com/?module=vending&action=itemhistory&id=',
 };
 
-const getTableData = async (itemId, tableType, callback) => {
-    let endpoint = '';
-    let iconURL = '';
-    let itemName = '';
+const getTableData = (itemId, tableType, callback) => {
+  let url = '';
+  let iconURL = '';
+  let itemName = '';
 
-    if (tableType === 'LIVE') endpoint = tableURL.LIVE;
-    else if (tableType === 'HISTORY') endpoint = tableURL.HISTORY;
-    else {
-      console.log(`Error: Invalid value in 'tableType'. Raised from getTableData/2.`);
-      return;
-    }
+  if (tableType === 'LIVE') url = tableURL.LIVE;
+  else if (tableType === 'HISTORY') url = tableURL.HISTORY;
+  else {
+    console.log(`Error: Invalid value in 'tableType'. Raised from asdf/2.`);
+    return;
+  }
 
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto(endpoint+itemId);
+  let options = {
+    url: url+itemId,
+    method: 'GET'
+  };
 
-    page.on('console', msg => {
-      console.log(msg.args());
-    });
+  request(options, (err, res, body) => {
+    if (!err && res.statusCode === 200) {
+      const dom = new JSDOM(body);
 
-    await page.evaluate(() => {
-      let tableRows = $('table.horizontal-table')[1].rows;
+      let tableRows = dom.window.document.getElementsByClassName('horizontal-table')[1].rows;
       let normalizedTable = [];
 
       for (let row of tableRows) {
         let arrOfCells = [];
         for (let cell of row.cells) {
-          arrOfCells.push(cell.innerText);
+          arrOfCells.push(cell.textContent.replace(/\\n|\\t|\s/g, ''));
+          console.log(JSON.stringify(cell.textContent));
         }
         normalizedTable.push(arrOfCells);
       }
 
-      iconURL = $('a')[21].parentElement.previousElementSibling.src;
-      itemName = $('a')[21].innerText;
+      iconURL = 'https://www.novaragnarok.com'+dom.window.document.getElementsByTagName('a')[21].parentElement.previousElementSibling.src;
+      itemName = dom.window.document.getElementsByTagName('a')[21].textContent;
 
-      return {
-        normalizedTable,
-        iconURL,
-        itemName
-      };
-    })
-    .then((evalData) => {
-      console.log(evalData);
-      callback(evalData.normalizedTable, evalData.iconURL, evalData.itemName);
-    })
-    .catch((err) => {
-      console.log('Error: Failed to evaluate page. Raised from getTableData/2.');
-      console.log(err);
-    });
-    console.log('before close');
-    await browser.close();
-    console.log('after close');
+      callback(normalizedTable, iconURL, itemName)
+    }
+  })
+
 };
 
 const toMarkdown = (tableData, tableType) => {
@@ -93,46 +79,7 @@ module.exports = {
   toMarkdown
 };
 
-const asdf = (itemId, tableType, callback) => {
-  let url = '';
-  let iconURL = '';
-  let itemName = '';
-
-  if (tableType === 'LIVE') url = tableURL.LIVE;
-  else if (tableType === 'HISTORY') url = tableURL.HISTORY;
-  else {
-    console.log(`Error: Invalid value in 'tableType'. Raised from asdf/2.`);
-    return;
-  }
-
-  let options = {
-    url: url+itemId,
-    method: 'GET'
-  };
-
-  request(options, (err, res, body) => {
-    if (!err && res.statusCode === 200) {
-      // console.log(body);
-      // const dom = new JSDOM('`'+body+'`');
-      // const dom = new JSDOM(``, {
-      //   url: url+itemId
-      // });
-      // console.log(dom.window.document);
-
-      const $ = cheerio.load(body);
-      // console.log($.html());
-      console.log($('table.horizontal-table')[1].children[3].children[1].children[1]);
-    }
-  })
-
-  // const dom = new JSDOM(``, {
-  //   url: url+itemId
-  // });
-  // console.log(dom.window.document);
-};
-
-asdf('2162', 'LIVE', (tableData, iconURL, itemName) => {
-  console.log('inside callback');
+getTableData('7619', 'LIVE', (tableData, iconURL, itemName) => {
   console.log(tableData);
   console.log(iconURL);
   console.log(itemName);

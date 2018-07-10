@@ -1,12 +1,10 @@
 {
   "name": "novaro-scraper",
-  "version": "2.0.0",
-  "description": "NPM package for scraping NovaRO market place ",
+  "version": "3.0.0",
+  "description": "NPM package for scraping NovaRO market place",
   "main": "index.js",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
     "jsdom": "^11.11.0",
-    "puppeteer": "^1.5.0",
     "request": "^2.87.0"
   },
   "devDependencies": {},

@@ -1,6 +1,6 @@
 {
   "name": "novaro-scraper",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "NPM package for scraping NovaRO market place",
   "main": "index.js",
   "dependencies": {

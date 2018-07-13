@@ -28,21 +28,23 @@ const getTableData = (itemId, tableType, callback) => {
     if (!err && res.statusCode === 200) {
       const dom = new JSDOM(body);
 
-      let tableRows = dom.window.document.getElementsByClassName('horizontal-table')[1].rows;
-      let normalizedTable = [];
+      if (dom.window.document.getElementsByClassName('horizontal-table')[1] !== undefined) {
+        let tableRows = dom.window.document.getElementsByClassName('horizontal-table')[1].rows;
+        let normalizedTable = [];
 
-      for (let row of tableRows) {
-        let arrOfCells = [];
-        for (let cell of row.cells) {
-          arrOfCells.push(cell.textContent.replace(/\\n|\\t|\s/g, ''));
+        for (let row of tableRows) {
+          let arrOfCells = [];
+          for (let cell of row.cells) {
+            arrOfCells.push(cell.textContent.replace(/\\n|\\t|\s/g, ''));
+          }
+          normalizedTable.push(arrOfCells);
         }
-        normalizedTable.push(arrOfCells);
+
+        iconURL = 'https://www.novaragnarok.com'+dom.window.document.getElementsByTagName('a')[21].parentElement.previousElementSibling.src;
+        itemName = dom.window.document.getElementsByTagName('a')[21].textContent;
+
+        callback(normalizedTable, iconURL, itemName);  
       }
-
-      iconURL = 'https://www.novaragnarok.com'+dom.window.document.getElementsByTagName('a')[21].parentElement.previousElementSibling.src;
-      itemName = dom.window.document.getElementsByTagName('a')[21].textContent;
-
-      callback(normalizedTable, iconURL, itemName)
     }
   })
 

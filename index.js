@@ -28,8 +28,8 @@ const getTableData = (itemId, tableType, callback) => {
     if (!err && res.statusCode === 200) {
       const dom = new JSDOM(body);
 
-      if (dom.window.document.getElementsByClassName('horizontal-table')[1] !== undefined) {
-        let tableRows = dom.window.document.getElementsByClassName('horizontal-table')[1].rows;
+      if (dom.window.document.getElementById('itemtable') !== undefined) {
+        let tableRows = dom.window.document.getElementById('itemtable').rows;
         let normalizedTable = [];
 
         for (let row of tableRows) {
@@ -40,10 +40,10 @@ const getTableData = (itemId, tableType, callback) => {
           normalizedTable.push(arrOfCells);
         }
 
-        iconURL = 'https://www.novaragnarok.com'+dom.window.document.getElementsByTagName('a')[21].parentElement.previousElementSibling.src;
-        itemName = dom.window.document.getElementsByTagName('a')[21].textContent;
+        iconURL = dom.window.document.getElementById('market-item-name').children[0].src;
+        itemName = dom.window.document.getElementById('market-item-name').children[1].textContent;
 
-        callback(normalizedTable, iconURL, itemName);  
+        callback(normalizedTable, iconURL, itemName);
       }
     }
   })

@@ -40,7 +40,7 @@ const getTableData = (itemId, tableType, callback) => {
           normalizedTable.push(arrOfCells);
         }
 
-        iconURL = dom.window.document.getElementById('market-item-name').children[0].src;
+        iconURL = 'https://www.novaragnarok.com'+dom.window.document.getElementById('market-item-name').children[0].src;
         itemName = dom.window.document.getElementById('market-item-name').children[1].textContent;
 
         callback(normalizedTable, iconURL, itemName);
@@ -79,3 +79,9 @@ module.exports = {
   getTableData,
   toMarkdown
 };
+
+getTableData('2162', 'LIVE', (tableData, iconURL, itemName) => {
+  console.log(tableData);
+  console.log(iconURL);
+  console.log(itemName);
+});

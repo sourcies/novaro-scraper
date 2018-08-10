@@ -28,8 +28,9 @@ const getTableData = (itemId, tableType, callback) => {
     if (!err && res.statusCode === 200) {
       const dom = new JSDOM(body);
 
-      if (dom.window.document.getElementById('itemtable') !== undefined) {
-        let tableRows = dom.window.document.getElementById('itemtable').rows;
+      let table = dom.window.document.getElementById('itemtable');
+      if (table) {
+        let tableRows = table.rows;
         let normalizedTable = [];
 
         for (let row of tableRows) {

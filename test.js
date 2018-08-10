@@ -1,4 +1,4 @@
-const NovaroScraper = require('novaro-scraper');
+const NovaroScraper = require('./index.js');
 
 NovaroScraper.getTableData('2162', 'LIVE', (tableData, iconURL, itemName) => {
   console.log(tableData);

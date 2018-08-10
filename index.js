@@ -79,9 +79,3 @@ module.exports = {
   getTableData,
   toMarkdown
 };
-
-getTableData('2162', 'LIVE', (tableData, iconURL, itemName) => {
-  console.log(tableData);
-  console.log(iconURL);
-  console.log(itemName);
-});

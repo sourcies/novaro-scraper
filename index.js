@@ -41,8 +41,8 @@ const getTableData = (itemId, tableType, callback) => {
           normalizedTable.push(arrOfCells);
         }
 
-        iconURL = 'https://www.novaragnarok.com'+dom.window.document.getElementById('market-item-name').children[0].src;
-        itemName = dom.window.document.getElementById('market-item-name').children[1].textContent;
+        iconURL = 'https://www.novaragnarok.com'+dom.window.document.getElementById('market-item-name').children[0].attributes[0].textContent;
+        itemName = dom.window.document.getElementById('market-item-name').children[2].textContent;
 
         callback(normalizedTable, iconURL, itemName);
       }

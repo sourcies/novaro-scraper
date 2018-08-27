@@ -15,7 +15,7 @@ const getTableData = (itemId, tableType, callback) => {
   if (tableType === 'LIVE') url = tableURL.LIVE;
   else if (tableType === 'HISTORY') url = tableURL.HISTORY;
   else {
-    console.log(`Error: Invalid value in 'tableType'. Raised from asdf/2.`);
+    console.log(`Error: Invalid value in 'tableType'. Raised from getTableData/3.`);
     return;
   }
 
@@ -29,7 +29,7 @@ const getTableData = (itemId, tableType, callback) => {
       const dom = new JSDOM(body);
 
       let table = dom.window.document.getElementById('itemtable');
-      if (table) {
+      if (table !== undefined) {
         let tableRows = table.rows;
         let normalizedTable = [];
 
@@ -41,8 +41,16 @@ const getTableData = (itemId, tableType, callback) => {
           normalizedTable.push(arrOfCells);
         }
 
-        iconURL = 'https://www.novaragnarok.com'+dom.window.document.getElementById('market-item-name').children[0].attributes[0].textContent;
-        itemName = dom.window.document.getElementById('market-item-name').children[2].textContent;
+        if (dom.window.document.getElementById('market-item-name') !== undefined &&
+            dom.window.document.getElementById('market-item-name').children[0] !== undefined &&
+            dom.window.document.getElementById('market-item-name').children[0].attributes[0] !== undefined) {
+          iconURL = 'https://www.novaragnarok.com'+dom.window.document.getElementById('market-item-name').children[0].attributes[0].textContent;
+        }
+
+        if (dom.window.document.getElementById('market-item-name') !== undefined &&
+            dom.window.document.getElementById('market-item-name').children[2] !== undefined) {
+          itemName = dom.window.document.getElementById('market-item-name').children[2].textContent;
+        }
 
         callback(normalizedTable, iconURL, itemName);
       }
@@ -78,5 +86,6 @@ const toMarkdown = (tableData, tableType) => {
 
 module.exports = {
   getTableData,
-  toMarkdown
+  toMarkdown,
+  tableURL
 };

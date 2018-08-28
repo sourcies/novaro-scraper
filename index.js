@@ -29,7 +29,7 @@ const getTableData = (itemId, tableType, callback) => {
       const dom = new JSDOM(body);
 
       let table = dom.window.document.getElementById('itemtable');
-      if (table !== undefined) {
+      if (table !== undefined && table !== null) {
         let tableRows = table.rows;
         let normalizedTable = [];
 

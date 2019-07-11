@@ -4,8 +4,8 @@
   "description": "NPM package for scraping NovaRO market place",
   "main": "index.js",
   "dependencies": {
-    "jsdom": "^11.11.0",
-    "request": "^2.87.0"
+    "jsdom": "^15.1.1",
+    "request": "^2.88.0"
   },
   "devDependencies": {},
   "scripts": {
